@@ -1,0 +1,223 @@
+Object:linux Shell详解（4）
+Time:2018-07-06 19:30
+
+
+上节回顾：
+
+本节知识点：
+	Linux常用命令：
+	目录操作命令：
+		ls,cd,pwd,mkdir,rmdir
+	文件操作命令：
+		touch,cp,mv,rm,find
+	文件内容操作命令：
+		cat,less,head,tail,grep，wc
+	归档以及压缩命令：
+		tar
+
+
+
+	#******************************************
+	mv  移动文件或者目录
+	格式：mv [选项] 源文件/目录   目标文件/目录
+		ex:
+		[root@localhost text]# ls
+		a.txt  b.text
+		[root@localhost text]# mv b.text /root/text-2/
+
+
+		注：若移动目标位置与源位置相同（当前下操作），则此操作相当于重命名（改名）
+		ex:  [root@localhost ~]# mv text  text-1
+
+
+	find  用于查找文件或者目录
+		格式：find [查找范围] [查找条件]
+
+		查找条件：
+			-name  按文件名查找
+				[root@localhost ~]# find / -name  initial-setup-ks.cfg
+				/root/initial-setup-ks.cfg
+				[root@localhost ~]# find / -name  initial-*
+				/root/initial-setup-ks.cfg
+				[root@localhost ~]# find / -name  initial-*-*
+				/root/initial-setup-ks.cfg
+				[root@localhost ~]# 
+
+
+
+				yuxiang@yx-pro:~$ sudo find / -name *conda*
+				[sudo] yuxiang 的密码： 
+				/home/yuxiang/anaconda3
+				find: ‘/run/user/1000/gvfs’: 权限不够
+				yuxiang@yx-pro:~$ 
+
+			-type  按文件类型查找   
+					f  普通文件
+						[root@localhost ~]# find / -name text -type f
+					d  目录
+						[root@localhost ~]# find / -name text -type d
+					b  块设备文件
+					c  字符设备文件
+			-user   按文件属主查找（这个文件是谁的）
+				[root@localhost ~]# find / -user yuxiang  -name initial-setup-ks.cfg -type f
+				find / -user yuxiang -type f -name yx.initial-setup-ks.cfg
+			-size   按文件大小进行查找
+				[root@localhost ~]# find /var/  -size +10k  -type f
+				[root@localhost ~]# find /var/  -size -1k  -type f
+
+				作业：在/var 目录下，查找大于10K小于11k的文件
+
+			-a  逻辑与
+			-o  逻辑或
+			！  逻辑非
+				[root@localhost ~]# find / ! -name temp -type f
+				find / -name anaconda-ks.cfg  -o -name initial-setup-ks.cfg
+
+
+		cat 文件内容查看，显示出文件的全部内容
+			格式：cat filename
+		less（more） 全屏方式分页显示文件内容
+			格式：less/more  filename
+
+			按回车Enter逐行滚动
+			按空格键向下翻页
+			按b键向上翻页
+			按q键退出
+			more用法与less一致，只是多了一个百分比显示
+
+
+		head(头部)显示文件头部若干行，默认十行
+			格式：head [选项] filename
+			head -n 5 initial-setup-ks.cfg 
+		tail(尾部)显示文件尾部若干行，默认十行
+			格式：tail [选项] filename
+			[root@localhost ~]# tail -n +5 initial-setup-ks.cfg
+
+		注释：注意符号的使用  + - 代表意思不同
+
+
+
+		wc 统计文件内容的，默认情况下统计结果为： 行数  词数  字节数
+
+			格式：wc [选项] filename
+
+			选项：
+				-w 统计字数  一个字被定义为由空白，跳格，换行以这些为分割字符串
+				-l 行数
+				-c 字节数
+				-m 字符数 -m -c 不能一起使用
+				-L 打印最长行的长度
+				man wc
+				wc --help
+				wc --version
+
+				wc -l -c -w -L initial-setup-ks.cfg
+
+
+		grep 在文件中查找并显示包含指定字符串的行
+			格式：grep [选项]  查找条件  目标文件
+
+				选项：
+					-c 显示匹配行的数量
+					-i 查找时不区分大小写
+					-v 反转查找
+
+					[root@localhost ~]# grep -c  'boot' initial-setup-ks.cfg 
+					7
+					[root@localhost ~]# grep -c -v  'boot' initial-setup-ks.cfg 
+					42
+					[root@localhost ~]#
+
+					[root@localhost ~]# grep -i "agent"  initial-setup-ks.cfg
+
+				查找条件设置：
+					1.查找条件用引号引起来
+					2.“^………………”表示以什么什么开头
+					3.“………………$”表示以什么什么结尾
+					4.“^$” 匹配空行
+
+					[root@localhost ~]# grep -cv  '^$' anaconda-ks.cfg
+					[root@localhost ~]# grep "^#" anaconda-ks.cfg
+					[root@localhost ~]# grep "ation$" anaconda-ks.cfg
+
+
+		tar 压缩与解压缩  制作归档文件和释放归档文件
+			格式：
+				制作归档文件：
+					tar [选项] [目录]/归档文件名  源文件或者目录
+				释放归档文件：
+					tar [选项] 归档文件  [-C 目标文件]
+
+			命令：
+				压缩：
+					tar -czvf [存放路径]归档文件名.tar.gz  源文件或者目录
+					tar -cjvf [存放路径]归档文件名.tar.bz2  源文件或者目录
+
+					-c 压缩    
+					-z  压缩为.gz格式
+					-vf 显示详细信息
+
+
+					"""
+					  103  tar -czvf /root/var.tar.gz /var/
+					  105  tar -cjvf /root/var.tar.bz2 /var/
+					  108  tar -czvf a.tar.gz  text-1 text-2
+
+					"""
+
+
+
+				解压缩：
+					tar  -xzvf [存放路径]归档文件名.tar.gz  [-C 解压目录]
+					tar  -xjvf [存放路径]归档文件名.tar.bz2  [-C 解压目录]
+
+					-x  解压
+
+					"""
+					tar -xzvf var.tar.gz
+					tar -xjvf var.tar.bz2 -C text-1/
+					"""
+
+
+		alias 别名：为使用频率较高的命令设置简短的调用名称
+
+			查看当前用户所有别名
+				alias  [别名]
+			设置别名
+				alias  别名=“实际执行的命令”  
+
+					[root@localhost ~]# alias aa="grep -c  'boot' initial-setup-ks.cfg"
+					[root@localhost ~]# alias aa
+					alias aa='grep -c  '\''boot'\'' initial-setup-ks.cfg'
+					[root@localhost ~]# aa
+					7
+					[root@localhost ~]# 
+
+			取消别名
+					[root@localhost ~]# unalias aa
+					[root@localhost ~]# unalias -a   #取消所有别名
+
+			让别名永久生效
+				将别名设置在~/.bashrc文件中
+
+
+
+				"""
+				.bashrc文件内容
+
+					# .bashrc
+
+					# User specific aliases and functions
+
+					alias rm='rm -i'
+					alias cp='cp -i'
+					alias mv='mv -i'
+					alias aa="grep -c  'boot' initial-setup-ks.cfg"
+
+					# Source global definitions
+					if [ -f /etc/bashrc ]; then
+						. /etc/bashrc
+					fi
+				"""
+
+
