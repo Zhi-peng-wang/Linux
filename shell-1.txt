@@ -1,0 +1,140 @@
+#大家好七点半准时直播
+#Object：Linux网络配置与shell讲解
+#time:2018-6-29
+
+#上节课回顾：
+		Linux发展史 1946——>1969 unix -->mi   -->linux ->linux
+		上课所需环境安装    rhel7/centos7   rhel6/centos6
+		
+#今天内容：
+		1.图形界面应用：一概而过 
+		2.网络配置  通过NAT让虚拟机访问外网
+					通过仅本地模式让真机与虚拟机通信
+		3.Shell简介
+					Linux精髓在于命令行操作
+					
+#Shell
+	概念：Shell是一种特殊的程序
+	作用：是内核与用户的一种接口
+	shell命令解释器
+	shell一种解释型的语言（内部命令/外部命令）
+		内部命令：系统自带的，随系统内核一起启动（56） cd（改变路径）
+		外部命令：就是一些额外的软件或者程序    ls（列出文件或者目录）
+	sh(Borurne Shell)   csh   ksh
+
+	BASH 是rhel中默认的一种
+	
+	
+
+  
+  
+  
+  
+	[root@localhost Desktop]#
+		root:代表当前登录用户
+		localhost：代表当前系统的主机名称
+		Desktop：代表当前所在的位置
+		#：这个#代表当前登录用户是管理员用户  
+			root：管理员  administractor
+		$:代表当前登录用户为普通用户
+			ex:[student@localhost ~]$
+	
+	[root@localhost ~]# su - student
+		su [-] username  切换当前登录
+			有 -  ：代表切换bash
+			无 -  ：代表不切换bash环境
+		由root用户到普通用户不需要密码
+		由普通用户到root用户需要密码
+		exit  退出
+		
+	#查看系统当前主机名   hostname
+		[root@localhost Desktop]# hostname
+		localhost.localdomain
+	#修改主机名并让他生效   hostnamectl set-hostname hostname
+	[root@localhost Desktop]# hostnamectl set-hostname BJTLXY
+	[root@localhost Desktop]# hostname
+	bjtlxy
+	[root@localhost Desktop]# su -
+	Last login: Fri Jun 29 08:07:42 EDT 2018 on pts/0
+	[root@bjtlxy ~]# 
+	
+	
+	
+	#关机操作
+		poweroff   
+		init 0
+		shutdown -h now
+		halt
+	#重启命令
+		reboot
+		shutdown -r now 	#现在重启
+		shutdown -r +15    #15min后重启	
+		
+	#准确的shell命令规范
+		命令字 【选项】 【参数】
+	
+	#查看当前系统时间
+	[root@bjtlxy ~]# date
+	Fri Jun 29 08:18:33 EDT 2018
+	#查看日历  cal
+	[root@bjtlxy ~]# cal
+		  June 2018     
+	Su Mo Tu We Th Fr Sa
+					1  2
+	 3  4  5  6  7  8  9
+	10 11 12 13 14 15 16
+	17 18 19 20 21 22 23
+	24 25 26 27 28 29 30
+
+	[root@bjtlxy ~]# 
+	
+	cal 年份    #查看全年日历
+	cal 月份  年份    #查看某年某月的日历
+
+
+	
+	#####
+	在Linux当中严格区分大小写
+	在Linux当中一切皆文本
+	#####
+
+	
+	
+#网络通信三种方法
+
+	#查看系统当前IP地址
+	[root@bjtlxy ~]# ifconfig
+	[root@bjtlxy ~]# ip addr show
+	#测试网络连通性
+		ping 127.0.0.1
+		ping 127.0.0.1 -c  4    #限制ping包次数
+
+
+	1.桥接     课后作业
+	2.NAT
+		只可以访问外网，但外面的不能访问里面
+	3.仅本地模式
+	
+
+#BASH常用快捷方式
+	CTRL + c  中断当前操作
+	CTRL + l(aile)   = clear     #清屏
+	'\'    #换行
+	CTRL + A   #光标跳到行首
+	CTRL + E   #光标跳到行尾
+	
+	CTRL + U   #清空光标所在位置的前面所有内容
+	CTRL + K   #清空光标所在位置的后面所有内容
+	
+	[root@bjtlxy ~]# history   #查看历史命令，默认保留1000行
+	
+	!n   #调用历史命令  ex:!22
+
+    [root@bjtlxy ~]# history -c    #清除历史命令
+	
+	#放大字体
+		CTRL + SHIFT + "+"
+	#缩小字体
+		CTRL + "-"
+		
+		

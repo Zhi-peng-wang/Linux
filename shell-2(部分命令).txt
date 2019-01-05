@@ -1,0 +1,124 @@
+#Object：Linux Shell详解（2）
+#time:2018-7-2-19:30
+
+
+#上节回顾：
+	Shell  命令解释器    BASH
+	
+	
+#今日讲解：
+	Shell命令详解与Linux目录结构（重点）
+	
+	Linux精髓在于命令行
+	
+	Linux命令的通用命令格式
+		命令字 【选项】 【参数】
+			选项：
+				作用：用于调节命令的具体功能
+				"-"引导短格式选项（单个字符） EX：“-l”
+				"--"引导长格式选项（多个字符） EX: "--color"
+				多个短格式选项可以写在一起
+					-a -l -z -x   -->  -alzx
+			参数：
+				命令操作的对象，有文件，目录等
+			
+			EX：ls -l /home
+			
+	linux目录结构
+		boot：存放系统引导文件和内核文件
+		bin:存放可执行文件(二进制文件)（ls,cat,mkdir）
+		sbin:root用户执行命令
+		home:普通用户的家目录
+		root:root用户家目录
+		dev：放置所有设备文件（外设） /dev/md* /dev/sd*  /dev/hd*………………
+		etc:放置所有配置文件（服务）
+		lib/lib64:动态链接库文件(共享库）类似于.dll	
+		media：媒体库文件
+		opt：文件安装目录，安装软件就在opt目录下
+		mnt:挂载点目录  mount * * 
+		var:存放一些需要改变数据的文件  日志，某些大文件的溢出区
+		proc:虚拟文件系统目录；放的是内存的一个映射
+			   24  cat /proc/cpuinfo    #查看CPU运行状态
+			   25  cat /proc/meminfo 	#查看内训运行状态
+			   26  cat /proc/version 	#查看系统版本
+			   27  uname -m				#查看cpu架构
+			   28  uname -r				#查看内核版本
+		usr:最大的目录 只要用到的目录或者文件都在这  /usr/sbin   /usr/doclinx   
+		tmp:共享文件夹，临时目录
+		lost+found:平时为空，只有系统在非正常关机时才会有，保存意外掉电中内存的数据
+		
+	
+	Linux常用命令：
+		目录操作命令：
+			ls,cd,pwd,mkdir,rmdir
+		文件操作命令：
+			touch,cp,mv,rm,find
+		文件内容操作命令：
+			cat,less,head,tail,grep
+		归档以及压缩命令：
+			tar
+			
+	linux中如何获得命令帮助：
+		help（内部命令）cd,kill  56条
+			EX:help cd
+			
+		--help（适用于大多数外部命令查找）  ls
+			EX:ls --help
+			
+		使用man手册进行命令查看（man：命令阅读手册）
+			“男人没有什么搞不定的”
+			man 命令字
+			上下键滚动文本
+			Page down  & Page Up上下翻页
+			空格也支持翻页，回车键走一行
+			输入 /   ,可以查找
+			
+		info 也可进行命令帮助查找（使用与man接近）
+		
+		pinfo 命令名称  以浏览器的形式查看详细的GUN信息
+		
+		/usr/share/doc  #所有已安装软件的说明文件
+			firefox file:///usr/share/doc
+			
+			
+			
+	linux 命令：
+		cd命令：切换工作目录
+			cd 【目录位置】
+				绝对路径：cd /home/student
+				相对路径：
+						cd ..  返回到上一级目录
+						cd -  返回上一次所在的工作路径
+						cd ../../  返回上一级目录的上一级目录
+						"""
+						[root@tlxy etc]# pwd
+						/etc
+						[root@tlxy etc]# cd -
+						/etc/systemd/system
+						#此操作返回到根
+						[root@tlxy system]# cd ../../../../../../../../../
+						[root@tlxy /]# pwd
+						/
+						[root@tlxy /]# 
+						"""
+						cd ~   返回到用户的家目录
+						"""
+						[root@tlxy ~]# cd ~/Documents/
+						[root@tlxy Documents]# pwd
+						/root/Documents
+						[root@tlxy Documents]# 
+						"""
+		pwd：查看当前所在的工作目录（告诉你自己在哪）
+		
+		ls:列出当前目录下的文件或者目录
+			格式： ls [选项] [目录或文件名]
+			选项：
+				-l   以长格式显示
+				-a   显示所有文件目录信息，包括隐藏文件
+				-d   显示目录本身的属性
+				-h   显示详细信息，变换了统计单位
+				--color   以颜色区分不同类型的文件
+				
+				
+			注：在Linux中，以.开头的文件是隐藏文件
+				ll == ls -l

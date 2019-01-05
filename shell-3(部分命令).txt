@@ -1,0 +1,93 @@
+#Object：Linux Shell详解（3）继续Linux命令的讲解
+#time:2018-7-4-19:30
+
+
+Linux常用命令：
+	目录操作命令：
+		ls,cd,pwd,mkdir,rmdir
+	文件操作命令：
+		touch,cp,mv,rm,find
+	文件内容操作命令：
+		cat,less,head,tail,grep
+	归档以及压缩命令：
+		tar
+		
+		
+	*****************************************
+	mkdir 创建一个新目录
+		格式：mkdir 【选项-p】[路径]目录名
+			-p  递归创建多级目录
+			mkdir -p b/c/e/f/g
+	rmdir  删除一个空目录
+		[root@tlxy ~]# rmdir adir/
+		
+		
+	touch  创建一个空文件，更新文件时间标记
+		格式：touch 文件名
+		注：在Linux中，不以后缀区分文件
+		
+		
+	实验：在A目录里面中，创建一个a.txt文件，写入几句话，然后在当前目录下
+			继续创建一个a.txt文件，文件内容还在吗？
+			
+			
+	[root@tlxy ~]# echo "hello world"   #打印某个东西说什么就是什么
+	hello world
+	
+	#重定向写
+	echo "hello world" > a.txt
+	
+	
+	
+	cp 复制文件或者目录
+		格式：cp [选项]  源文件/目录   目标文件/目录
+		
+			-r  递归复制整个目录树
+		
+		[root@tlxy bb]# cp /root/aa/a.txt   /root/bb/
+		[root@tlxy bb]# cp ../aa/a.txt   .
+		
+		"""
+		[root@tlxy ~]# mkdir bb
+		[root@tlxy ~]# cd bb
+		[root@tlxy bb]# ls
+		[root@tlxy bb]# cp /root/aa/a.txt /root/bb/^C
+		[root@tlxy bb]# cp ../aa/a.txt .
+		[root@tlxy bb]# ls
+		a.txt
+		[root@tlxy bb]# touch /root/aa/b.txt
+		[root@tlxy bb]# cp /root/aa/b.txt /root/bb/
+		[root@tlxy bb]# pwd
+		/root/bb
+		[root@tlxy bb]# ls
+		a.txt  b.txt
+		[root@tlxy bb]# 
+
+		"""
+		
+		rm  删除文件或目录
+		格式：rm [选项] 文件或者目录 
+			-r  递归删除整个目录树
+			-f  强制删除不给任何提示
+			
+		rm -rf /  从删库到跑路（心有多大就跑多远）
+		
+		
+		
+		
+		
+		
+		解答：
+			cd cd .    cd ..
+			针对目录来说   .   当前位置/目录   pwd
+			针对文件来讲   .   在Linux中代表隐藏文件
+			
+			cd   什么都不跟，代表切换当前用户家目录
+			cd .  当前目录
+			cd ..  代表上级目录
+			
+			
+			~  用户家目录
+			-  上次所操作的目录
+			../../
+			
